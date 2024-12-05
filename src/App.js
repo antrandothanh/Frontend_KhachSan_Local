@@ -23,6 +23,9 @@ import OwnerCustomerRatings from './components/Owner/OwnerHotelManagement/OwnerC
 import OwnerHotelRegistration from './components/Owner/OwnerHotelRegistration.js';
 import CustomerPaymentStatus from './components/Customer/CustomerPaymentStatus.js';
 import ForgetPassword from './components/ForgetPassword.js';
+import VerifyOTP from "./components/VerifyOTP.js";
+import ChangePassword from './components/ChangePassword.js';
+
 const router = createBrowserRouter([
   {
     path: "",
@@ -63,6 +66,14 @@ const router = createBrowserRouter([
       {
         path: 'forgot-password',
         element: <ForgetPassword />
+      },
+      {
+        path: "verify-otp",
+        element: <VerifyOTP />
+      },
+      {
+        path: "change-password",
+        element: <ChangePassword />
       }
     ],
   },
