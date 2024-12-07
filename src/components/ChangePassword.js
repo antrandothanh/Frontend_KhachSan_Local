@@ -15,7 +15,7 @@ export default function ChangePassword() {
 
     const changePasswordAPI = async (newPassword, retypedNewPassword, email) => {
         try {
-            const request = await axios.post(`http://localhost:8080/forgotPassword/changePassword/${email}`, {
+            const request = await axios.post(`http://localhost:8080/api/forgotPassword/changePassword/${email}`, {
                 password: newPassword,
                 repeatPassword: retypedNewPassword
             });
