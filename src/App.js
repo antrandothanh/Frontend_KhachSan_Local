@@ -25,6 +25,7 @@ import CustomerPaymentStatus from './components/Customer/CustomerPaymentStatus.j
 import ForgetPassword from './components/ForgetPassword.js';
 import VerifyOTP from "./components/VerifyOTP.js";
 import ChangePassword from './components/ChangePassword.js';
+import CustomerHomePage from './components/Customer/CustomerHomePage.js';
 
 const router = createBrowserRouter([
   {
@@ -33,7 +34,11 @@ const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <CustomerBookingPage />
+        element: <CustomerHomePage />
+      },
+      {
+        path: ":cityUrl",
+        element: <CustomerBookingPage/>
       },
       {
         path: "sign-in",
@@ -52,11 +57,11 @@ const router = createBrowserRouter([
         element: <CustomerPaymentPage />
       },
       {
-        path: "hotel-detail",
+        path: ":cityUrl/hotel-detail",
         element: <CustomerHotelDetailPage />,
       },
       {
-        path: "hotel-detail/all-images",
+        path: ":city/hotel-detail/all-images",
         element: <CustomerAllHotelImages />
       },
       {

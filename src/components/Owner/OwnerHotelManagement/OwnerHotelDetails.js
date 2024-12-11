@@ -7,23 +7,28 @@ import axios from "axios";
 export default function OwnerHotelDetails() {
     const location = useLocation();
     // hotel
+    const hotelId = location.state.hotelId;
     const [name, setName] = useState("default");
     const [city, setCity] = useState("default");
     const [district, setDistrict] = useState("default");
     const [street, setStreet] = useState("default");
     const [description, setDescription] = useState("default");
+    const [utilities, setUtilities] = useState([]);
+    const [hotelImages, setHotelImages] = useState([]);
 
     const [isEditable, setIsEditable] = useState(false);
 
-    const fetchHotelById = async (id) => {
+    const fetchHotelById = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/hotels/${id}`);
+            const response = await axios.get(`http://localhost:8080/api/hotels/${hotelId}`);
             const result = response.data.result;
             setName(result.name);
             setCity(result.city);
             setDistrict(result.district);
             setStreet(result.street);
             setDescription(result.description);
+            setUtilities(result.utilities);
+            setHotelImages(result.hotelImages);
         }
         catch {
             console.error("Cannot fetch hotel");
@@ -35,9 +40,29 @@ export default function OwnerHotelDetails() {
         fetchHotelById(location.state.hotelId);
     }
 
+    const handleSave = async () => {
+        try {
+            const request = await axios.put(`http://localhost:8080/api/hotels/${hotelId}`, {
+                name: name,
+                street: street,
+                district: district,
+                city: city,
+                description: description,
+                utilities: utilities,
+                hotelImages: hotelImages
+            });
+            if (request.data) {
+                window.alert("Lưu thành công");
+                setIsEditable(!isEditable);
+            }
+        } catch (error) {
+            console.error("Cannot save edit", error);
+            window.alert("Lưu thất bại");
+        }
+    }
+
     useEffect(() => {
-        const hotelId = location.state.hotelId;
-        fetchHotelById(hotelId);
+        fetchHotelById();
     }, [location.state.hotelId]);
     return (
         <div>
@@ -106,6 +131,7 @@ export default function OwnerHotelDetails() {
                     {isEditable && (
                         <button
                             type="button"
+                            onClick={handleSave}
                             className="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
                         >
                             Lưu

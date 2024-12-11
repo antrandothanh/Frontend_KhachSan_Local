@@ -26,39 +26,51 @@ function CustomerHeader() {
         navigate("/");
         window.location.reload();
     }
+
+    const handleAccessToBookingHistory = async (e) => {
+        e.preventDefault();
+        const token = localStorage.getItem("accessToken");
+        if (token == null) {
+            window.alert("Bạn phải đăng nhập mới sử dụng được chức năng này");
+        } else {
+            navigate("/booking-history");
+        }
+    }
+
     return (
-        <div class="py-5 mb-3">
-            <nav class="bg-white border-gray-200">
-                <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-                    <div class="flex items-center space-x-3 rtl:space-x-reverse">
-                        <span class="self-center text-2xl font-bold">BOOKING</span>
+        <div className="py-5 mb-3">
+            <nav className="bg-white border-gray-200">
+                <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+                    <div className="flex items-center space-x-3 rtl:space-x-reverse">
+                        <span className="self-center text-2xl font-bold">BOOKING</span>
                     </div>
-                    <div class="items-center justify-between w-full md:flex md:w-auto md:order-1" id="navbar-cta">
-                        <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white">
+                    <div className="items-center justify-between w-full md:flex md:w-auto md:order-1" id="navbar-cta">
+                        <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white">
                             <li>
                                 <a
                                     href="/"
-                                    class="block py-2 px-3 md:p-0 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700">
+                                    className="block py-2 px-3 md:p-0 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700">
                                     Đặt Phòng Ngay
                                 </a>
                             </li>
                             <li>
                                 <a
+                                    onClick={handleAccessToBookingHistory}
                                     href="/booking-history"
-                                    class="block py-2 px-3 md:p-0 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700">
+                                    className="block py-2 px-3 md:p-0 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700">
                                     Lịch Sử Đặt Phòng
                                 </a>
                             </li>
                             <li>
                                 <a
                                     href="#"
-                                    class="block py-2 px-3 md:p-0 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700">
+                                    className="block py-2 px-3 md:p-0 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700">
                                     Về Chúng Tôi
                                 </a>
                             </li>
                         </ul>
                     </div>
-                    <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+                    <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
 
                         {isSignedIn ? (
                             <div>

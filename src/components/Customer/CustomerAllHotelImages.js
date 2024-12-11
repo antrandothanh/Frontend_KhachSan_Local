@@ -1,12 +1,13 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 export default function CustomerAllHotelImages() {
     const navigate = useNavigate();
     const location = useLocation();
     const hotelId = location.state.hotelId;
     const [hotelImages, setHotelImages] = useState([]);
+    const {city} = useParams();
 
     const fetchImages = async (id) => {
         try {
@@ -19,7 +20,7 @@ export default function CustomerAllHotelImages() {
 
     const handleReturn = (e) => {
         e.preventDefault();
-        navigate("/hotel-detail", { state: { hotelId: hotelId } });
+        navigate(`/${city}/hotel-detail`, { state: { hotelId: hotelId } });
     }
 
     useEffect(() => {

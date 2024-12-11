@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import CustomerHotelDetailRoomItem from "./CustomerHotelDetailRoomItem";
 import DatePicker from "react-datepicker";
@@ -13,11 +13,15 @@ import { useCookies } from "react-cookie";
 export default function CustomerHotelDetailPage() {
     const navigate = useNavigate();
 
+    const { cityUrl } = useParams();
+
     const location = useLocation();
     const hotelId = location.state.hotelId;
+    const selectedCheckInDateFromState = location.state.selectedCheckInDate || null;
+    const selectedCheckOutDateFromState = location.state.selectedCheckOutDate || null;
 
-    const [selectedCheckInDate, setSelectedCheckInDate] = useState(null);
-    const [selectedCheckOutDate, setSelectedCheckOutDate] = useState(null);
+    const [selectedCheckInDate, setSelectedCheckInDate] = useState(selectedCheckInDateFromState);
+    const [selectedCheckOutDate, setSelectedCheckOutDate] = useState(selectedCheckOutDateFromState);
 
     const [rooms, setRooms] = useState([]);
 
@@ -140,18 +144,26 @@ export default function CustomerHotelDetailPage() {
 
     const handleSeeMoreImages = (e) => {
         e.preventDefault();
-        navigate("/hotel-detail/all-images", { state: { hotelId: hotelId } });
+        navigate(`all-images`, { state: { hotelId: hotelId } });
+    }
+
+    const handleGoBack = (e) => {
+        e.preventDefault();
+        navigate(`/${cityUrl}`);
     }
 
     useEffect(() => {
-        if (!selectedCheckInDate && !selectedCheckOutDate) {
-            window.scrollTo(0, 0);
-        }
+        // if (!selectedCheckInDate && !selectedCheckOutDate) {
+        //     window.scrollTo(0, 0);
+        // }
+        window.scrollTo(0, 0);
         const fetchData = async () => {
 
-            if (!selectedCheckInDate && !selectedCheckOutDate) {
-                await fetchHotelById(hotelId);
-            }
+            // if (!selectedCheckInDate && !selectedCheckOutDate) {
+            //     await fetchHotelById(hotelId);
+            // }
+
+            await fetchHotelById(hotelId);
 
 
             const allRooms = await fetchRooms(hotelId);
@@ -166,10 +178,18 @@ export default function CustomerHotelDetailPage() {
         };
 
         fetchData();
-    }, [hotelId, selectedCheckInDate, selectedCheckOutDate]);
+    }, [hotelId, selectedCheckOutDate]);
 
     return (
         <div className="py-8 px-64">
+            <div className="mb-5">
+                <a href="#" onClick={handleGoBack} style={{ cursor: "pointer" }} class="inline-flex items-center font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                    <svg class="w-4 h-4 mr-2 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5H1m0 0L5 9m-4-4L5 1" />
+                    </svg>
+                    Quay lại
+                </a>
+            </div>
             {/* Hotel Image */}
             <div className="flex justify-center mb-2 w-full">
                 {hotelImages.slice(0, 3).map((hotelImage) => (
@@ -182,7 +202,7 @@ export default function CustomerHotelDetailPage() {
 
             </div>
             <div className="mb-5">
-                <a href="/hotel-detail/all-images" onClick={handleSeeMoreImages} style={{ cursor: "pointer" }} class="inline-flex items-center font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                <a href="#" onClick={handleSeeMoreImages} style={{ cursor: "pointer" }} class="inline-flex items-center font-medium text-blue-600 dark:text-blue-500 hover:underline">
                     Xem thêm ảnh
                     <svg class="w-4 h-4 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
