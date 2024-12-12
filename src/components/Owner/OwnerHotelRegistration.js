@@ -11,18 +11,18 @@ export default function OwnerHotelRegistration() {
     const [street, setStreet] = useState("");
     const [district, setDistrict] = useState("");
     const [description, setDescription] = useState("");
-    const [imageQuantity, setImageQuantity] = useState(0);
-    const [imageUrls, setImageUrls] = useState([]);
     const [utilities, setUtilities] = useState([]);
     const [selectedUtilities, setSelectedUtilities] = useState([]);
+    const [hotelImagesLinks, setHotelImagesLinks] = useState([]);
     // const [hotelImages, setHotelImages] = useState([]);
-    const hotelImages = []; 
+    const hotelImages = [];
+    const [uploadImageMessage, setUploadImageMessage] = useState("");
 
-    const handleImageUrlChange = (index, value) => {
-        const updatedUrls = [...imageUrls];
-        updatedUrls[index] = value;
-        setImageUrls(updatedUrls);
-    };
+    // const handleImageUrlChange = (index, value) => {
+    //     const updatedUrls = [...imageUrls];
+    //     updatedUrls[index] = value;
+    //     setImageUrls(updatedUrls);
+    // };
 
     const handleUtilityChange = async (e) => {
         const selectedUtilityId = e.target.value;
@@ -33,11 +33,9 @@ export default function OwnerHotelRegistration() {
     };
 
     const handleRegister = async () => {
-        for (let i = 0; i < imageQuantity; i++) {
-            await createHotelImageApi(imageUrls[i]);
+        for (let i = 0; i < hotelImagesLinks.length; i++) {
+            await createHotelImageApi(hotelImagesLinks[i]);
         }
-
-        // await fetchHotelImages();
         await createHotelApi();
     };
 
@@ -66,25 +64,12 @@ export default function OwnerHotelRegistration() {
         setSelectedUtilities([]);
     }
 
-    // const findHotelImages = (allImages) => {
-    //     return allImages.filter((image) => imageIds.includes(image.id));
-    // };
-
-    // const fetchHotelImages = async () => {
-    //     try {
-    //         const response = await axios.get("https://hotel-booking-t05s.onrender.com/api/hotel-images");
-    //         hotelImages = findHotelImages(response.data.result);
-    //     } catch (error) {
-    //         console.error("Cannot fetch hotel images: ", error);
-    //     }
-    // };
-
     const createHotelImageApi = async (imageUrl) => {
         try {
-            const request = await axios.post(`http://localhost:8080/api/hotel-images`, {
+            const response = await axios.post(`http://localhost:8080/api/hotel-images`, {
                 imageUrl: imageUrl
             });
-            hotelImages.push(request.data.result);
+            hotelImages.push(response.data.result);
         }
         catch (error) {
             console.error("Cannot create new image: ", error);
@@ -114,6 +99,30 @@ export default function OwnerHotelRegistration() {
     const fetchData = async () => {
         fetchUtilities();
     }
+
+    const uploadImage = async (e) => {
+        try {
+            const files = e.target.files;
+            const formData = new FormData();
+            for (let i = 0; i < files.length; i++) {
+                formData.append("files", files[i]);
+            }
+            const request = await axios.post("http://localhost:8080/api/uploadImages", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
+            if (request) {
+                setUploadImageMessage("Tải ảnh thành công");
+                setHotelImagesLinks(request.data.result);
+            } else {
+                setUploadImageMessage("Tải ảnh thất bại, vui lòng làm lại");
+            }
+        } catch (error) {
+            console.error("Cannot upload images", error);
+            setUploadImageMessage("Tải ảnh thất bại, vui lòng làm lại");
+        }
+    };
 
     useEffect(() => {
         fetchData();
@@ -212,44 +221,13 @@ export default function OwnerHotelRegistration() {
                         </div>
                     </div>
 
-
                     <div className="mb-6">
-                        <label className="block mb-2 text-sm font-medium text-gray-900 ">Số lượng hình ảnh</label>
-                        <div className="grid gap-6 mb-6 md:grid-cols-2">
-                            <div>
-                                <input
-                                    type="number"
-                                    value={imageQuantity}
-                                    onChange={(e) => {
-                                        let quantity = e.target.value;
-                                        if (quantity < 0) {
-                                            setImageQuantity(0)
-                                        } else {
-                                            setImageQuantity(Number(quantity));
-                                        }
-                                    }}
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                />
-                            </div>
-                        </div>
+                        <label className="block mb-2 text-sm font-medium text-gray-900 ">Chọn ảnh</label>
+                        <input type="file" multiple onChange={uploadImage} />
                     </div>
-
                     <div className="mb-6">
-                        <label className="block mb-2 text-sm font-medium text-gray-900 ">Link hình ảnh</label>
-                        <div className="grid gap-6 mb-6 md:grid-cols-2">
-                            {Array.from({ length: imageQuantity }).map((_, i) => (
-                                <input
-                                    key={i}
-                                    placeholder={`Link hình thứ ${i + 1}`}
-                                    type="text"
-                                    value={imageUrls[i] || ""}
-                                    onChange={(e) => handleImageUrlChange(i, e.target.value)}
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                />
-                            ))}
-                        </div>
+                        {uploadImageMessage}
                     </div>
-
                     <button
                         type="button"
                         onClick={handleRegister}

@@ -30,19 +30,6 @@ export default function OwnerHotelsPage() {
 
     return (
         <div className="my-5">
-            <div className="bg-slate-200 p-5 mb-10">
-                <div className="max-w-sm mx-auto">
-                    <div className='mb-3'>
-                        <label className="block mb-2 text-sm font-medium text-gray-900">Chọn tỉnh/thành phố</label>
-                        <select id="city" value={selectedCity} onChange={changeCity} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                            <option selected value="all">Tất cả</option>
-                            <option value="Thành phố Hồ Chí Minh">Thành phố Hồ Chí Minh</option>
-                            <option value="Đà Nẵng">Đà Nẵng</option>
-                        </select>
-                    </div>
-
-                </div>
-            </div>
             <div className="text-center mb-5 bg-slate-200 py-5">
                 <p className="text-4xl font-bold">
                     Quản lý khách sạn
