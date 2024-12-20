@@ -225,6 +225,9 @@ export default function OwnerHotelRegistration() {
                         <label className="block mb-2 text-sm font-medium text-gray-900 ">Chọn ảnh</label>
                         <input type="file" multiple onChange={uploadImage} />
                     </div>
+                    <div className="mb-6 text-red-500">
+                        Lưu ý: Đợi hiện thông báo "Tải ảnh thành công" mới được nhấn đăng ký
+                    </div>
                     <div className="mb-6">
                         {uploadImageMessage}
                     </div>

@@ -70,10 +70,6 @@ export default function OwnerPostRoom() {
                                 onChange={(e) => setPrice(e.target.value)}
                             />
                         </div>
-                        <div>
-                            <label className="block mb-2 text-sm font-medium text-gray-900 ">Chọn ảnh</label>
-                            <input type="file" onChange={uploadImage} />
-                        </div>
                     </div>
                     <button
                         type="button"

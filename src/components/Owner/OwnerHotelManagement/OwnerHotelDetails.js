@@ -114,7 +114,7 @@ export default function OwnerHotelDetails() {
                         <textarea
                             rows="10"
                             className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 "
-                            readOnly
+                            readOnly={!isEditable}
                             onChange={(e) => setDescription(e.target.value)}
                             value={description}
                         />

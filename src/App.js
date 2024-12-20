@@ -130,6 +130,11 @@ const router = createBrowserRouter([
 
 
 function App() {
+  
+  useEffect(() => {
+    document.title = "Booking xin chào";
+  }, []);
+
   return (
     <div>
       <RouterProvider router={router} />
